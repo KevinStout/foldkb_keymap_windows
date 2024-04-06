@@ -53,6 +53,7 @@ enum custom_keycodes {
     PG_VBAR,
     MS_BTN,
     PG_FARRO,
+    PG_COLEQ,
 };
 
 // clang-format off
@@ -72,7 +73,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_PG] = LAYOUT(
   // ┌────────────────┬────────────────┬────────────────┬────────────────┬────────────────┬────────────────┬────────────────┬────────────────┐        ┌────────────────┬────────────────┬────────────────┬────────────────┬────────────────┬────────────────┬────────────────┬──────────┐
-      _______,          _______,         _______,         KC_1,            KC_2,            KC_LBRC,         KC_RBRC,         KC_5,                     KC_F6,           KC_F7,           KC_F8,           KC_F9,           KC_F10,          KC_F11,          KC_F12,          _______,
+      _______,          _______,         _______,         KC_1,            PG_NEEQ,            KC_LBRC,         KC_RBRC,         PG_COLEQ,                     KC_F6,           KC_F7,           KC_F8,           KC_F9,           KC_F10,          KC_F11,          KC_F12,          _______,
   // ├────────────────┼───┬────────────┴────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼────────────────┤        ├────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼──────────┤
       RGB_TOG,               _______,                     _______,         PG_SLAS,         PG_LPAR,         PG_RPAR,         PG_TWOSLASH,              _______,         KC_HOME,         KC_UP,           KC_PGUP,         KC_INS,          _______,         _______,         _______,
   // ├────────────────┼───┼─────────────────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼────────────────┤        ├────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼────────────────┼────────────────┴──────────┤
@@ -188,7 +189,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     if (!ctrl_on) SEND_STRING(" ");
                 } else {
                     if (ctrl_on) SEND_STRING(" ");
-                    SEND_STRING(" => ");
+                    SEND_STRING("=>");
                     if (ctrl_on) SEND_STRING(" ");
                 }
                 set_mods(std_mods);
@@ -272,7 +273,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 clear_mods();
                 clear_oneshot_mods();
                 if (!ctrl_on) SEND_STRING(" ");
-                shift_on ? SEND_STRING("!=") : SEND_STRING("!==");
+                shift_on ? SEND_STRING(" != ") : SEND_STRING(" !== ");
                 if (!ctrl_on) SEND_STRING(" ");
                 set_mods(std_mods);
                 set_oneshot_mods(oneshot_mods);
@@ -305,6 +306,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case PG_FARRO:
             if (record->event.pressed) {
                 SEND_STRING("() => ");
+                return false;
+            }
+        case PG_COLEQ:
+            if (record->event.pressed) {
+                SEND_STRING(" := ");
                 return false;
             }
             break;
